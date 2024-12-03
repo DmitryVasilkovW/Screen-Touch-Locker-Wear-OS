@@ -1,21 +1,28 @@
-<LinearLayout
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:gravity="center"
-    android:padding="16dp">
+    android:background="#000000">
 
-    <Button
-        android:id="@+id/btn_assign_key"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Назначить кнопку" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:padding="16dp">
 
-    <Button
-        android:id="@+id/btn_exit_mode"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Выйти из режима"
-        android:layout_marginTop="16dp" />
-</LinearLayout>
+        <Button
+            android:id="@+id/btn_assign_key"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Назначить кнопку" />
+
+        <Button
+            android:id="@+id/btn_start_lock"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Запустить блокировку"
+            android:layout_marginTop="16dp" />
+    </LinearLayout>
+</FrameLayout>

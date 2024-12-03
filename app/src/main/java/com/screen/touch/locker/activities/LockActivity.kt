@@ -1,6 +1,8 @@
 package com.screen.touch.locker.activities
 
+import android.content.Context
 import android.os.Bundle
+import android.view.KeyEvent
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
@@ -13,12 +15,34 @@ import androidx.compose.ui.graphics.Color
 import androidx.wear.compose.material.Text
 
 class LockActivity : ComponentActivity() {
+    private var unlockKey: String? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        unlockKey = loadButtonPreference()
 
         setContent {
             LockScreen()
         }
+    }
+
+    private fun loadButtonPreference(): String? {
+        val sharedPref = getSharedPreferences("settings", Context.MODE_PRIVATE)
+        return sharedPref.getString("lock_button", "HOME") // По умолчанию HOME
+    }
+
+    override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
+        val keyName = when (keyCode) {
+            KeyEvent.KEYCODE_HOME -> "HOME"
+            KeyEvent.KEYCODE_BACK -> "BACK"
+            else -> null
+        }
+        if (keyName == unlockKey) {
+            finish() // Разблокировать экран
+            return true
+        }
+        return super.onKeyDown(keyCode, event)
     }
 }
 
@@ -30,6 +54,6 @@ fun LockScreen() {
             .background(Color.Black),
         contentAlignment = Alignment.Center
     ) {
-        Text("Screen Locked", color = Color.White)
+        Text("Screen Locked", color = Color.Blue)
     }
 }

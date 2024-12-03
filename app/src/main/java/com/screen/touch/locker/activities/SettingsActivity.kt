@@ -1,47 +1,36 @@
 package com.screen.touch.locker.activities
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
+import android.widget.Button
 import android.widget.Toast
 import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
-import androidx.wear.compose.material.Button
-import androidx.wear.compose.material.Text
+import com.screen.touch.locker.R
 
 class SettingsActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_settings)
 
-        setContent {
-            SettingsScreen(
-                onSaveSettings = {
-                    // Сохраните настройки
-                    Toast.makeText(this, "Settings Saved", Toast.LENGTH_SHORT).show()
-                    finish() // Закрыть активность после сохранения
-                }
-            )
+        val assignKeyButton: Button = findViewById(R.id.btn_assign_key)
+        val startLockButton: Button = findViewById(R.id.btn_start_lock)
+
+        assignKeyButton.setOnClickListener {
+            saveButtonPreference("HOME")
+            Toast.makeText(this, "Кнопка HOME выбрана для разблокировки", Toast.LENGTH_SHORT).show()
+        }
+
+        startLockButton.setOnClickListener {
+            startActivity(Intent(this, LockActivity::class.java))
         }
     }
-}
 
-@Composable
-fun SettingsScreen(onSaveSettings: () -> Unit) {
-    Column(
-        modifier = Modifier
-            .padding(16.dp)
-            .fillMaxWidth()
-    ) {
-        Text("Settings Screen")
-        Button(
-            onClick = { onSaveSettings() },
-            modifier = Modifier.padding(top = 16.dp)
-        ) {
-            Text("Save Settings")
+    private fun saveButtonPreference(button: String) {
+        val sharedPref = getSharedPreferences("settings", Context.MODE_PRIVATE)
+        with(sharedPref.edit()) {
+            putString("lock_button", button)
+            apply()
         }
     }
 }
