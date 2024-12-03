@@ -1,5 +1,7 @@
 package com.screen.touch.locker.activities
 
+import android.annotation.SuppressLint
+import android.app.KeyguardManager
 import android.content.Context
 import android.os.Bundle
 import android.view.KeyEvent
@@ -19,6 +21,7 @@ import androidx.wear.compose.material.Text
 class LockActivity : ComponentActivity() {
     private var unlockKey: String? = null
 
+    @SuppressLint("ObsoleteSdkInt")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -29,9 +32,16 @@ class LockActivity : ComponentActivity() {
             }
         })
 
+        val keyguardManager = getSystemService(Context.KEYGUARD_SERVICE) as KeyguardManager
+        keyguardManager.requestDismissKeyguard(this, null)
+
         window.addFlags(WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD)
+        window.addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         window.addFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
+        window.addFlags(WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM)
+        window.addFlags(WindowManager.LayoutParams.FLAG_SECURE)
+        window.addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
 
         setContent {
             LockScreen()
