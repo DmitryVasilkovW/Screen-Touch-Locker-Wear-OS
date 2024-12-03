@@ -30,10 +30,26 @@
             android:theme="@style/MainActivityTheme.Starting">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".activities.SettingsActivity"
+            android:exported="true"
+            android:taskAffinity="com.screen.touch.locker.settings">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".activities.LockActivity"
+            android:taskAffinity="com.screen.touch.locker.settings">
+        </activity>
+
+
     </application>
 
 </manifest>
