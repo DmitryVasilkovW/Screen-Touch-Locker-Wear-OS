@@ -4,6 +4,7 @@ import android.content.Context
 import android.os.Bundle
 import android.view.KeyEvent
 import androidx.activity.ComponentActivity
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -22,6 +23,11 @@ class LockActivity : ComponentActivity() {
 
         unlockKey = loadButtonPreference()
 
+        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+            }
+        })
+
         setContent {
             LockScreen()
         }
@@ -29,7 +35,7 @@ class LockActivity : ComponentActivity() {
 
     private fun loadButtonPreference(): String? {
         val sharedPref = getSharedPreferences("settings", Context.MODE_PRIVATE)
-        return sharedPref.getString("lock_button", "HOME") // По умолчанию HOME
+        return sharedPref.getString("lock_button", "HOME")
     }
 
     override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
@@ -39,7 +45,7 @@ class LockActivity : ComponentActivity() {
             else -> null
         }
         if (keyName == unlockKey) {
-            finish() // Разблокировать экран
+            finish()
             return true
         }
         return super.onKeyDown(keyCode, event)
