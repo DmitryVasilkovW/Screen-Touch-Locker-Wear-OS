@@ -1,40 +1,47 @@
 package com.screen.touch.locker.activities
 
 import android.os.Bundle
-import android.widget.Button
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
-import com.screen.touch.locker.R
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
+import androidx.wear.compose.material.Button
+import androidx.wear.compose.material.Text
 
-class SettingsActivity : AppCompatActivity() {
-
-    private val preferences by lazy {
-        getSharedPreferences("AppSettings", MODE_PRIVATE)
-    }
-
+class SettingsActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_settings)
 
-        val btnAssignKey: Button = findViewById(R.id.btn_assign_key)
-        val btnExitMode: Button = findViewById(R.id.btn_exit_mode)
-
-        btnAssignKey.setOnClickListener {
-            Toast.makeText(this, "Нажмите кнопку для выбора", Toast.LENGTH_SHORT).show()
-            setKeyListener()
-        }
-
-        btnExitMode.setOnClickListener {
-            preferences.edit().remove("keyCode").apply()
-            Toast.makeText(this, "Режим сброшен", Toast.LENGTH_SHORT).show()
+        setContent {
+            SettingsScreen(
+                onSaveSettings = {
+                    // Сохраните настройки
+                    Toast.makeText(this, "Settings Saved", Toast.LENGTH_SHORT).show()
+                    finish() // Закрыть активность после сохранения
+                }
+            )
         }
     }
+}
 
-    private fun setKeyListener() {
-        window.decorView.setOnKeyListener { _, keyCode, _ ->
-            preferences.edit().putInt("keyCode", keyCode).apply()
-            Toast.makeText(this, "Кнопка назначена: $keyCode", Toast.LENGTH_SHORT).show()
-            true
+@Composable
+fun SettingsScreen(onSaveSettings: () -> Unit) {
+    Column(
+        modifier = Modifier
+            .padding(16.dp)
+            .fillMaxWidth()
+    ) {
+        Text("Settings Screen")
+        Button(
+            onClick = { onSaveSettings() },
+            modifier = Modifier.padding(top = 16.dp)
+        ) {
+            Text("Save Settings")
         }
     }
 }

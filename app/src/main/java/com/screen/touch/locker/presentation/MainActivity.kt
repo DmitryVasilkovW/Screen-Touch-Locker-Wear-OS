@@ -6,15 +6,15 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.text.ClickableText
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
+import androidx.wear.compose.material.Button
+import androidx.wear.compose.material.Text
 import com.screen.touch.locker.activities.SettingsActivity
 import com.screen.touch.locker.presentation.theme.ScreenTouchLockerTheme
 
@@ -24,34 +24,30 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             ScreenTouchLockerTheme {
-                Box(
-                    modifier = Modifier.fillMaxSize(),
-                    contentAlignment = Alignment.Center
-                ) {
-                    MainScreen()
-                }
+                MainScreen(onOpenSettings = {
+                    val intent = Intent(this, SettingsActivity::class.java)
+                    startActivity(intent)
+                })
             }
         }
     }
 }
 
 @Composable
-fun MainScreen() {
-    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-        ClickableText(
-            text = AnnotatedString("Open Settings"),
-            onClick = { openSettings() },
-            modifier = Modifier.fillMaxWidth(),
-            textAlign = TextAlign.Center,
-            fontSize = 18.sp
-        )
+fun MainScreen(onOpenSettings: () -> Unit) {
+    Box(
+        modifier = Modifier.fillMaxSize(),
+        contentAlignment = Alignment.Center
+    ) {
+        Button(onClick = onOpenSettings) {
+            Text(
+                text = "Open Settings",
+                style = TextStyle(
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.Bold,
+                    textAlign = TextAlign.Center
+                )
+            )
+        }
     }
 }
-
-fun openSettings() {
-    // Start the SettingsActivity
-    val context = MyApplication.context
-    val intent = Intent(context, SettingsActivity::class.java)
-    context.startActivities(intent)
-}
-
